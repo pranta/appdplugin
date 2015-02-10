@@ -24,5 +24,25 @@
 		
 		<header-file src="src/ios/AppDynamicsAPI.h"/>
 		<source-file src="src/ios/AppDynamicsAPI.m"/>
+		<header-file src="src/ios/AppDCache.h"/>
+		<source-file src="src/ios/AppDCache.m"/>
 	</platform>
+	
+	<platform name="android">
+		<config-file target="config.xml" parent="/*/plugins">
+			<plugin name="AppDynamicsAPI" value="AppDynamicsAPI"/>
+		</config-file>
+		
+		<config-file target="config.xml" parent="/widget">
+			<feature name="AppDynamics">
+				<param name="android-package" value="org.steveww.appdplugin.AppDynamicsAPI"/>
+			</feature>
+		</config-file>
+		
+		<source-file src="src/org/steveww/appdplugin/AppDynamicsAPI.java" target-dir="src/org/stevew/appdplugin"/>
+		<source-file src="src/org/steveww/appdplugin/SharedCache.java" target-dir="src/org/stevew/appdplugin"/>
+		<!-- Include a jar file -->
+		<!-- source-file src="src/appdynamics.jar" target-dir="libs" framework="true"/ -->
+	</platform>
+	
 </plugin>
