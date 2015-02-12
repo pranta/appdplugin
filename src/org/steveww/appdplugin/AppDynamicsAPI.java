@@ -53,6 +53,7 @@ public class AppDynamicsAPI extends CordovaPlugin {
 			HashMap cache = SharedCache.getInstance();
 			CallTracker tracker = (CallTracker)cache.get(key);
 			Instrumentation.endCall(tracker);
+			cache.remove(key);
 			status = true;
 		} else if(action.equals("consoleLog")) {
 			String msg = args.getString(0);
