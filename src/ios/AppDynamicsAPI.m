@@ -2,6 +2,7 @@
 #import "AppDCache.h"
 #import <Cordova/CDV.h>
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
+#import <ADEUMInstrumentation/ADEumHTTPRequestTracker.h>
 
 @implementation AppDynamicsAPI
 
@@ -62,11 +63,10 @@
 	CDVPluginResult* pluginResult = nil;
 	NSString* name = [command.arguments objectAtIndex:0];
 	NSString* selName = [command.arguments objectAtIndex:1];
+    
+    // Use UUID for key
+    NSString *key = [[NSUUID alloc] init].UUIDString;
 	
-	// make key out of names
-	NSMutableString *key = [[NSMutableString alloc] init];
-	[key appendString:name];
-	[key appendString:selName];
 	NSLog(@"beginCall with key %@", key);
 	// get cache
 	NSMutableDictionary *cache = [AppDCache sharedCache];
@@ -77,7 +77,6 @@
 		id tracker = [ADEumInstrumentation beginCall:name selector:sel];
 		// save tracker in cache
 		cache[key] = tracker;
-		NSLog(@"get tracker");
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:key];
 	} else {
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
@@ -94,16 +93,104 @@
 	
 	// get the cache
 	NSMutableDictionary *cache = [AppDCache sharedCache];
-	id tracker = cache[key];
+    
+    if(key != nil && [key length] > 0) {
+        id tracker = cache[key];
+        if(tracker != nil) {
+            [ADEumInstrumentation endCall:tracker];
+            // clear cache
+            [cache removeObjectForKey:key];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        }
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+    }
 	
-	if(tracker != nil) {
-		[ADEumInstrumentation endCall:tracker];
-		// clear cache
-		[cache removeObjectForKey:key];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)leaveBreadcrumb:(CDVInvokedUrlCommand*)command
+{
+	CDVPluginResult* pluginResult = nil;
+	NSString* crumb = [command.arguments objectAtIndex:0];
+	NSLog(@"leaveBreadcrumb %@", crumb);
+	
+	if(crumb != nil && [crumb length] > 0) {
+		[ADEumInstrumentation leaveBreadcrumb:crumb];
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	} else {
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
 	}
+	
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)beginHttpRequest:(CDVInvokedUrlCommand*)command
+{
+	CDVPluginResult* pluginResult = nil;
+	NSString* url = [command.arguments objectAtIndex:0];
+	NSLog(@"beginHttpRequest %@", url);
+    
+    // use UUID for key
+    NSString *key = [[NSUUID alloc]init].UUIDString;
+	
+	// get cache
+	NSMutableDictionary *cache = [AppDCache sharedCache];
+	NSURL *nsurl = [[NSURL alloc] initWithString:url]; // new url from string
+	
+	if(url != nil && [url length] > 0 && nsurl != nil) {
+		ADEumHTTPRequestTracker *tracker = [ADEumHTTPRequestTracker requestTrackerWithURL:nsurl];
+		cache[key] = tracker;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:key];
+	} else {
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+	}
+	
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)reportDone:(CDVInvokedUrlCommand*)command
+{
+	CDVPluginResult* pluginResult = nil;
+	NSString *key = [command.arguments objectAtIndex:0];
+	NSNumber *status = [command.arguments objectAtIndex:1];
+	NSDictionary *headers = [command.arguments objectAtIndex:2];
+	//NSLog(@"reportDone %@", [headers description]);
+	
+	// Hack to get round bug CORE-39486
+	NSMutableDictionary *headersfixed = [[NSMutableDictionary alloc] init];
+	NSString *val = nil;
+	NSString *newkey = nil;
+	for(NSString *key in headers) {
+		val = headers[key];
+		if([key hasPrefix:@"adrum"]) {
+			newkey = key.uppercaseString;
+		} else {
+			newkey = key;
+		}
+		headersfixed[newkey] = val;
+	}
+	NSLog(@"FIXED headers %@", [headersfixed description]);
+	
+	// get cache
+	NSMutableDictionary *cache = [AppDCache sharedCache];
+	if(key != nil && [key length] > 0) {
+		ADEumHTTPRequestTracker *tracker = cache[key];
+		if(tracker != nil) {
+			[cache removeObjectForKey:key];
+			tracker.statusCode = status;
+			tracker.allHeaderFields = headersfixed;
+			[tracker reportDone];
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+		} else {
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+		}
+	} else {
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+	}
+	
 	
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }

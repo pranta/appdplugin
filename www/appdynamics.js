@@ -8,6 +8,12 @@ window.appdynamics.reportMetricWithName = function(name, value, callback) {
 		}, "AppDynamics", "reportMetricWithName", [name, value]);
 };
 
+window.appdynamics.leaveBreadcrumb = function(name, callback) {
+	cordova.exec(callback, function(err) {
+		callback('Error');
+	}, "AppDynamics", "leaveBreadcrumb", [name]);
+};
+
 window.appdynamics.startTimerWithName = function(name, callback) {
 	cordova.exec(callback, function(err) {
 		callback('Error');
@@ -26,10 +32,22 @@ window.appdynamics.beginCall = function(name, sel, callback) {
 	}, "AppDynamics", "beginCall", [name, sel]);
 };
 
-window.appdynamics.endCall = function(sel, callback) {
+window.appdynamics.endCall = function(key, callback) {
 	cordova.exec(callback, function(err) {
 		callback('Error');
-	}, "AppDynamics", "endCall", [sel]);
+	}, "AppDynamics", "endCall", [key]);
+};
+
+window.appdynamics.beginHttpRequest = function(url, callback) {
+	cordova.exec(callback, function(err) {
+		callback('Error');
+	}, "AppDynamics", "beginHttpRequest", [url]);
+};
+
+window.appdynamics.reportDone = function(key, status, headers, callback) {
+	cordova.exec(callback, function(err) {
+		callback('Error');
+	}, "AppDynamics", "reportDone", [key, status, headers]);
 };
 
 window.appdynamics.consoleLog = function(msg, callback) {
