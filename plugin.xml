@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="com.appdynamics.eum" version="4.0.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="com.appdynamics.appdplugin" version="4.0.3">
 	<name>AppDynamics</name>
 	<description>AppDynamics EUM API Plugin</description>
 	<keywords>appdynamics</keywords>
@@ -10,6 +10,9 @@
 		<engine name="cordova" version=">=2.7.0"/>
 	</engines>
 	
+	<!--
+	Apple iOS
+	-->
 	<platform name="ios">
 		<config-file target="config.xml" parent="/*/plugins">
 			<plugin name="AppDynamicsAPI" value="AppDynamicsAPI" onload="true"/>
@@ -28,6 +31,9 @@
 		<source-file src="src/ios/AppDCache.m"/>
 	</platform>
 	
+	<!--
+	Android
+	-->
 	<platform name="android">
 		<config-file target="config.xml" parent="/*/plugins">
 			<plugin name="AppDynamicsAPI" value="AppDynamicsAPI"/>
@@ -35,14 +41,12 @@
 		
 		<config-file target="config.xml" parent="/widget">
 			<feature name="AppDynamics">
-				<param name="android-package" value="org.steveww.appdplugin.AppDynamicsAPI"/>
+				<param name="android-package" value="com.appdynamics.appdplugin.AppDynamicsAPI"/>
 			</feature>
 		</config-file>
 		
-		<source-file src="src/org/steveww/appdplugin/AppDynamicsAPI.java" target-dir="src/org/stevew/appdplugin"/>
-		<source-file src="src/org/steveww/appdplugin/SharedCache.java" target-dir="src/org/stevew/appdplugin"/>
-		<!-- Include a jar file -->
-		<!-- source-file src="src/appdynamics.jar" target-dir="libs" framework="true"/ -->
+		<source-file src="src/com/appdynamics/appdplugin/AppDynamicsAPI.java" target-dir="src/org/stevew/appdplugin"/>
+		<source-file src="src/com/appdynamics/appdplugin/SharedCache.java" target-dir="src/org/stevew/appdplugin"/>
 	</platform>
 	
 </plugin>
