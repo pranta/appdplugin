@@ -37,14 +37,17 @@ public class AppDynamicsAPI extends CordovaPlugin {
 			long value = args.getLong(1);
 			Instrumentation.reportMetric(name, value);
 			status = true;
+			cbContext.success();
 		} else if(action.equals("startTimerWithName")) {
 			String name = args.getString(0);
 			Instrumentation.startTimer(name);
 			status = true;
+			cbContext.success();
 		} else if(action.equals("stopTimerWithName")) {
 			String name = args.getString(0);
 			Instrumentation.stopTimer(name);
 			status = true;
+			cbContext.success();
 		} else if(action.equals("beginCall")) {
 			String name = args.getString(0);
 			String method = args.getString(1);
@@ -62,11 +65,13 @@ public class AppDynamicsAPI extends CordovaPlugin {
 				Instrumentation.endCall(tracker);
 				cache.remove(key);
 				status = true;
+				cbContext.success();
 			}
 		} else if(action.equals("leaveBreadcrumb")) {
 			String crumb = args.getString(0);
 			Instrumentation.leaveBreadcrumb(crumb);
 			status = true;
+			cbContext.success();
 		} else if(action.equals("beginHttpRequest")) {
 			String urlString = args.getString(0);
 			try {
@@ -109,11 +114,19 @@ public class AppDynamicsAPI extends CordovaPlugin {
 				tracker.withResponseHeaderFields(headersMap).withResponseCode(responsecode).reportDone();
 				cache.remove(tkey);
 				status = true;
+				cbContext.success();
 			}
 		} else if(action.equals("consoleLog")) {
 			String msg = args.getString(0);
 			Log.i(TAG, "Log >>> " + msg);
 			status = true;
+			cbContext.success();
+		}
+		// catch all
+		else {
+			Log.e(TAG, "Action not recognised");
+			status = false;
+			cbContext.error("Action not recognised");
 		}
 		
 		return status;
