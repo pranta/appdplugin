@@ -21,6 +21,7 @@ import android.util.Log;
 import com.appdynamics.eumagent.runtime.Instrumentation;
 import com.appdynamics.eumagent.runtime.CallTracker;
 import com.appdynamics.eumagent.runtime.HttpRequestTracker;
+import com.appdynamics.eumagent.runtime.ServerCorreleationHeaders;
 
 public class AppDynamicsAPI extends CordovaPlugin {
 	private static final String TAG = "appdplugin";
@@ -72,6 +73,13 @@ public class AppDynamicsAPI extends CordovaPlugin {
 			Instrumentation.leaveBreadcrumb(crumb);
 			status = true;
 			cbContext.success();
+		} else if(action.equals("getCorrelationHeaders")) {
+			Map<String, List<String>> headersMap = ServerCorreleationHeaders.generate();
+			JSONObject headers = new JSONObject();
+			for(Map<String, List<String>> entry : headersMap.entrySet()) {
+				headers.put(entry.getKey(), entry.getValue().get(0));
+			}
+			cbContext.success(headers);
 		} else if(action.equals("beginHttpRequest")) {
 			String urlString = args.getString(0);
 			try {

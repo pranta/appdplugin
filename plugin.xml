@@ -4,10 +4,8 @@
 	<description>AppDynamics EUM API Plugin</description>
 	<keywords>appdynamics</keywords>
 	
-	<asset src="www/appdynamics.js" target="plugins/appdynamics.js"/>
-	
 	<engines>
-		<engine name="cordova" version=">=2.7.0"/>
+		<engine name="cordova" version=">=5.0.0"/>
 	</engines>
 	
 	<!--
@@ -45,8 +43,8 @@
 			</feature>
 		</config-file>
 		
-		<source-file src="src/com/appdynamics/appdplugin/AppDynamicsAPI.java" target-dir="src/org/stevew/appdplugin"/>
-		<source-file src="src/com/appdynamics/appdplugin/SharedCache.java" target-dir="src/org/stevew/appdplugin"/>
+		<source-file src="src/com/appdynamics/appdplugin/AppDynamicsAPI.java" target-dir="src/com/appdynamics/appdplugin"/>
+		<source-file src="src/com/appdynamics/appdplugin/SharedCache.java" target-dir="src/com/appdynamics/appdplugin"/>
 	</platform>
 	
 </plugin>

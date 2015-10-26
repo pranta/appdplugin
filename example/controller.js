@@ -17,26 +17,39 @@ simpleApp.controller('simpleDate', function($scope, $http) {
     // Event handlers
     $scope.getDate = function() {
     	var appdkey;
+
+	// default callbacks
+	var wincb = function() {
+		console.log('Success');
+	};
+	var failcb = function(e) {
+		console.log('Error ' + e);
+	};
     	
 	// report custom metric value
-        window.appdynamics.reportMetricWithName('foo', 42, function(data) {
-        	console.log('appd callback ' + data);
-        });
+	cordova.exec(wincb, failcb, 'AppDynamics', 'reportMetricWithName', ['foo', 42]);
 
 	// start of network request
-        window.appdynamics.beginHttpRequest(requestURL, function(key) {
-        	console.log('appd callback ' + key);
-		// save key for later
-        	appdkey = key;
-        });
-        // headers() returns headers object
+	var requestcb = function(d) {
+		console.log('Success');
+		appdkey = d;
+	};
+	cordova.exec(wincb, failcb, 'AppDynamics', 'beginHttpRequest', [requestURL]);
+	// get headers to pass with request
+	var = adHeaders;
+	var headerscb = function(d) {
+		console.log('Got headers');
+		adHeaders = d;
+	};
+	cordova.exec(headerscb, failcb, 'AppDynamics', 'getCorrelationHeaders', []);
+
 	// NOTE ADRUM request headers must be set
-        $http.get(requestURL, {headers: {'ADRUM':'isAjax:true', 'ADRUM_1':'isMobile:true'}}).success(function(data, status, headers) {
+        $http.get(requestURL, {headers: adHeaders}).success(function(data, status, headers) {
 		// report the result of the network request
+		// headers() returns headers object
         	window.appdynamics.reportDone(appdkey, status, headers(), function(data) {
         		console.log('appd callback ' + data);
         	});
-        	$scope.onScreenLogging = headers();
         	$scope.simpleDate = data;
     	}).error(function(data, status, headers) {
 		// report the result of the network request
@@ -49,29 +62,15 @@ simpleApp.controller('simpleDate', function($scope, $http) {
 	// start a custom timer, name is the key
     $scope.startTimer = function(name) {
     	$('#clock').show();
-    	window.appdynamics.startTimerWithName(name, function(data) {
-    		console.log('appd callback ' + data);
-    	});
+	cordova.exec(wincb, failcb, 'AppDynamics', 'startTimerWithName', [name]);
     };
     
 	// stop a custom timer, name is the key
     $scope.stopTimer = function(name) {
     	$('#clock').hide();
-    	window.appdynamics.stopTimerWithName(name, function(data) {
-    		console.log('appd callback ' + data);
-    	});
+	cordova.exec(wincb, failcb, 'AppDynamics', 'stopTimerWithName', [name]);
     };
     
-	// report a custom method invocation, use key to report finish
-    $scope.infopoint = function(name, method) {
-    	window.appdynamics.beginCall(name, method, function(key) {
-		// utility call to log to application output for debugging
-    		window.appdynamics.consoleLog('infopoint callback ' + key, function(data){});
-		// set timeout to call end after 200ms, use key.
-    		window.setTimeout(window.appdynamics.endCall, 200, key, function(data){});
-    	});
-    	$scope.onScreenLogging = 'Logging';
-    };
     
 });
 
