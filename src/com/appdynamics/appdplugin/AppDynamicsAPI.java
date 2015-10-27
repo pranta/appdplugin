@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 import java.net.URL;
 import java.net.MalformedURLException;
@@ -21,7 +23,7 @@ import android.util.Log;
 import com.appdynamics.eumagent.runtime.Instrumentation;
 import com.appdynamics.eumagent.runtime.CallTracker;
 import com.appdynamics.eumagent.runtime.HttpRequestTracker;
-import com.appdynamics.eumagent.runtime.ServerCorreleationHeaders;
+import com.appdynamics.eumagent.runtime.ServerCorrelationHeaders;
 
 public class AppDynamicsAPI extends CordovaPlugin {
 	private static final String TAG = "appdplugin";
@@ -74,9 +76,9 @@ public class AppDynamicsAPI extends CordovaPlugin {
 			status = true;
 			cbContext.success();
 		} else if(action.equals("getCorrelationHeaders")) {
-			Map<String, List<String>> headersMap = ServerCorreleationHeaders.generate();
+			Map<String, List<String>> headersMap = ServerCorrelationHeaders.generate();
 			JSONObject headers = new JSONObject();
-			for(Map<String, List<String>> entry : headersMap.entrySet()) {
+			for(Map.Entry<String, List<String>> entry : headersMap.entrySet()) {
 				headers.put(entry.getKey(), entry.getValue().get(0));
 			}
 			cbContext.success(headers);
@@ -124,14 +126,7 @@ public class AppDynamicsAPI extends CordovaPlugin {
 				status = true;
 				cbContext.success();
 			}
-		} else if(action.equals("consoleLog")) {
-			String msg = args.getString(0);
-			Log.i(TAG, "Log >>> " + msg);
-			status = true;
-			cbContext.success();
-		}
-		// catch all
-		else {
+		} else { // catch all
 			Log.e(TAG, "Action not recognised");
 			status = false;
 			cbContext.error("Action not recognised");

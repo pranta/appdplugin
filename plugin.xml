@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="com.appdynamics.appdplugin" version="4.0.3">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="com.appdynamics.appdplugin" version="4.1.0">
 	<name>AppDynamics</name>
 	<description>AppDynamics EUM API Plugin</description>
 	<keywords>appdynamics</keywords>
 	
 	<engines>
-		<engine name="cordova" version=">=5.0.0"/>
+		<engine name="cordova" version=">=3.9.1"/>
 	</engines>
 	
 	<!--
