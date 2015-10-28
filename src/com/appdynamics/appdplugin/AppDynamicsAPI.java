@@ -51,6 +51,18 @@ public class AppDynamicsAPI extends CordovaPlugin {
 			Instrumentation.stopTimer(name);
 			status = true;
 			cbContext.success();
+		} else if(action.equals("setUserData")) {
+			String key = args.getString(0);
+			String value = args.getString(1);
+			boolean flag = args.getBoolean(2);
+			if(key == null || value == null || key.length() == 0 || value.length() == 0) {
+				cbContext.error("empty values");
+				Log.e(TAG, "empty values");
+			} else {
+				Instrumentation.setUserData(key, value, flag);
+				cbContext.success();
+				status = true;
+			}
 		} else if(action.equals("beginCall")) {
 			String name = args.getString(0);
 			String method = args.getString(1);
@@ -96,6 +108,7 @@ public class AppDynamicsAPI extends CordovaPlugin {
 			} catch(MalformedURLException e) {
 				// Log it
 				Log.e(TAG, "Exception: " + e.getMessage());
+				cbContext.error(e.getMessage());
 			}
 		} else if(action.equals("reportDone")) {
 			String tkey = args.getString(0);
