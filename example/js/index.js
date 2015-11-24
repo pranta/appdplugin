@@ -2,12 +2,12 @@
 // home lab
 // 'http://192.168.56.101:8080/Angular/DateServlet';
 // mobile champions
-// 'http://54.186.110.33:8080/Angular/DateServlet';
+// 'http://54.76.1.203:8080/Angular/DateServlet';
 
 // Lab stuff
 var appdynamics = {
 	counter: 0,
-	requestURL: 'http://54.186.110.33:8080/Angular/DateServlet',
+	requestURL: 'http://54.76.1.203:8080/Angular/DateServlet',
 	headers: {},
 	parseResponseHeaders: function(headerStr) {
 		var headers = {};
