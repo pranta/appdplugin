@@ -4,11 +4,13 @@
 	<description>AppDynamics EUM API Plugin</description>
 	<keywords>appdynamics,rum</keywords>
 	<author>Steve W</author>
-	
+
 	<engines>
 		<engine name="cordova" version=">=3.9.1"/>
 	</engines>
-	
+
+	<framework src="com.appdynamics:appdynamics-runtime:4.+" />
+
 	<!--
 	Apple iOS
 	-->
@@ -19,13 +21,13 @@
 				<param name="onload" value="true"/>
 			</feature>
 		</config-file>
-		
+
 		<header-file src="src/ios/AppDynamicsAPI.h"/>
 		<source-file src="src/ios/AppDynamicsAPI.m"/>
 		<header-file src="src/ios/AppDCache.h"/>
 		<source-file src="src/ios/AppDCache.m"/>
 	</platform>
-	
+
 	<!--
 	Android
 	-->
@@ -35,9 +37,9 @@
 				<param name="android-package" value="com.appdynamics.appdplugin.AppDynamicsAPI"/>
 			</feature>
 		</config-file>
-		
+
 		<source-file src="src/com/appdynamics/appdplugin/AppDynamicsAPI.java" target-dir="src/com/appdynamics/appdplugin"/>
 		<source-file src="src/com/appdynamics/appdplugin/SharedCache.java" target-dir="src/com/appdynamics/appdplugin"/>
 	</platform>
-	
+
 </plugin>
