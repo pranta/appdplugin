@@ -6,15 +6,16 @@
 	<author>Steve W</author>
 
 	<engines>
-		<engine name="cordova" version=">=3.9.1"/>
+		<engine name="cordova" version=">=4.0.0"/>
+		<engine name="cordova-android" version=">=4.0.0"/>
+		<engine name="cordova-ios" version=">=4.3.0"/>
 	</engines>
-
-	<framework src="com.appdynamics:appdynamics-runtime:4.+" />
 
 	<!--
 	Apple iOS
 	-->
 	<platform name="ios">
+		<framework src="AppDynamicsAgent" type="podspec" spec="~> 41.2.0" />
 		<config-file target="config.xml" parent="/widget">
 			<feature name="AppDynamics">
 				<param name="ios-package" value="AppDynamicsAPI"/>
@@ -32,6 +33,7 @@
 	Android
 	-->
 	<platform name="android">
+		<framework src="com.appdynamics:appdynamics-runtime:4.+" />
 		<config-file target="config.xml" parent="/widget">
 			<feature name="AppDynamics">
 				<param name="android-package" value="com.appdynamics.appdplugin.AppDynamicsAPI"/>
