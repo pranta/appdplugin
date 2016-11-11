@@ -51,6 +51,9 @@
 
 		<source-file src="src/com/appdynamics/appdplugin/AppDynamicsAPI.java" target-dir="src/com/appdynamics/appdplugin"/>
 		<source-file src="src/com/appdynamics/appdplugin/SharedCache.java" target-dir="src/com/appdynamics/appdplugin"/>
+
+		<hook type ="before_build" src="scripts/add-appd-to-classpath.sh" />
+		<hook type ="before_run" src="scripts/add-appd-to-classpath.sh" />
 	</platform>
 
 </plugin>
