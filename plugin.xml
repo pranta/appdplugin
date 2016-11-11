@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="com.appdynamics.appdplugin" version="4.1.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	id="com.appdynamics.appdplugin"
+	version="4.1.0">
+
 	<name>AppDynamics</name>
 	<description>AppDynamics EUM API Plugin</description>
 	<keywords>appdynamics,rum</keywords>
@@ -38,6 +42,11 @@
 			<feature name="AppDynamics">
 				<param name="android-package" value="com.appdynamics.appdplugin.AppDynamicsAPI"/>
 			</feature>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/*">
+			<uses-permission android:name="android.permission.INTERNET" />
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 		</config-file>
 
 		<source-file src="src/com/appdynamics/appdplugin/AppDynamicsAPI.java" target-dir="src/com/appdynamics/appdplugin"/>
