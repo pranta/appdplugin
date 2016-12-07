@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	id="com.appdynamics.appdplugin"
-	version="4.1.0">
+	version="4.2.0">
 
 	<name>AppDynamics</name>
 	<description>AppDynamics EUM API Plugin</description>
@@ -19,7 +19,7 @@
 	Apple iOS
 	-->
 	<platform name="ios">
-		<framework src="AppDynamicsAgent" type="podspec" spec="~> 41.2.0" />
+		<framework src="AppDynamicsAgent" type="podspec" spec="~> 42.9.0" />
 		<config-file target="config.xml" parent="/widget">
 			<feature name="AppDynamics">
 				<param name="ios-package" value="AppDynamicsAPI"/>
