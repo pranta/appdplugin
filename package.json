@@ -1,0 +1,41 @@
+{
+  "name": "appdplugin",
+  "version": "4.2.0",
+  "description": "AppDynamics EUM API Plugin",
+  "cordova": {
+    "id": "com.appdynamics.appdplugin",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asmod3us/appdplugin.git"
+  },
+  "keywords": [
+    "appdynamics",
+    "rum",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "engines": {
+    "cordovaDependencies": {
+        "4.1.0": {
+          "cordova": ">=3.9.1"
+        },
+        "4.2.0": {
+          "cordova-android": ">= 4.0.0",
+          "cordova-ios": ">= 4.3.0",
+          "cordova-cli": "6.4.0"
+        }
+    }
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/asmod3us/appdplugin/issues"
+  },
+  "homepage": "https://github.com/asmod3us/appdplugin#readme"
+}
